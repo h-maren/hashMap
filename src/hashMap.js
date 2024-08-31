@@ -1,28 +1,29 @@
 import { LinkedList } from "./linkedlist";
 
 class HashMap {
-    constructor() {
+    constructor(size=17) {
         this.buckets=[];
+        this.size=size;
     }
     hash(key) {
         let hashCode=0;
         const primeNumber=31;
         for(let i=0; i<key.length; i++){
-            hashCode=primeNumber*hashCode+key.charCodeAt(i);
+            hashCode=(primeNumber*hashCode+key.charCodeAt(i)) % this.size;
         }
         return hashCode;
     }
     set(key,value){
         //each bucket will be a linked list
-        let hashCode = this.hash(key);
-        if (this.buckets[hashCode]==null){
-            this.buckets[hashCode] = new LinkedList();
+        let hashIndex = this.hash(key);
+        if (!this.buckets[hashIndex]){
+            this.buckets[hashIndex] = new LinkedList();
         }
-        this.buckets[hashCode].append(key,value);
+        this.buckets[hashIndex].append(key,value);
     }
     get(key){
-        let hashCode=this.hash(key);
-        let storedList=this.buckets[hashCode];
+        let hashIndex=this.hash(key);
+        let storedList=this.buckets[hashIndex];
         if(storedList===undefined){
             return null;
         } else {
@@ -30,26 +31,54 @@ class HashMap {
         }
     }
     has(key){
-        let hashCode=this.hash(key);
-        let storedList=this.buckets[hashCode];
+        let hashIndex=this.hash(key);
+        let storedList=this.buckets[hashIndex];
         console.log(storedList)
         if(storedList){
+            console.log(storedList.size);
             return true;
         } else {
             return false;
         }
     }
-    //NEED TO FIX
     remove(key){
-       let hashCode=this.hash(key);
-       let storedList=this.buckets[hashCode];
+       let hashIndex=this.hash(key);
+       let storedList=this.buckets[hashIndex];
        let checkList=storedList.remove(key);
+       console.log(storedList);
        console.log(checkList);
-        /*if(storedList){
-            this.buckets[hashCode].remove(key);
-        } else {
-            return false;
-        }*/
+       if(storedList.size===0){
+        this.buckets[hashIndex]=null;
+       }
+    }
+    length(){
+        let count=0;
+        this.buckets.forEach((bucket)=> {
+            let currentNode=bucket.head;
+            while(currentNode){
+                if(currentNode.key){
+                    count++;
+                }
+                currentNode=currentNode.nextNode;
+            }
+        });
+        return count;
+    }
+    clear() {
+        this.buckets.forEach((bucket) => {
+            console.log(bucket);
+            let currentNode=bucket.head;
+            while(currentNode){
+                currentNode.data=null;
+                currentNode.key=null;
+                currentNode=currentNode.nextNode;
+                bucket.size--;
+            }
+            bucket.head=null;
+            bucket=null;
+        });
+    }
+    keys(){
     }
 }
 

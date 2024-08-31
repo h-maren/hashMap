@@ -13,6 +13,12 @@ console.log(test.has('blueberry'))
 
 test.set('banana', 'yellow');
 console.log(test);
-test.remove('banana');
-console.log(test.has('banana'));
+console.log(test.has('apple'));
 console.log(test.has('cat'));
+
+
+
+console.log(test.length());
+//test.clear();
+console.log(test);
+//test.set('apple','red');

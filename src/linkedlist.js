@@ -3,14 +3,12 @@ import { Node } from "./node.js";
 class LinkedList {
   constructor() {
     this.head = null;
-    this.tail = null;
     this.size = 0;
   }
   append(key,value) {
     let newNode = new Node(key,value);
     if (this.head === null) {
       this.head = newNode;
-      this.tail = newNode;
       this.size++;
       return;
     }
@@ -19,7 +17,6 @@ class LinkedList {
       current = current.nextNode;
     }
     current.nextNode = newNode;
-    this.tail = newNode;
     this.size++;
   }
   get(key){
@@ -34,13 +31,11 @@ class LinkedList {
     }
     return null;
   }
-  //NEED TO FIX
   remove(key){
     let prevNode = this.head;
     if(key===prevNode.key){
       if(this.size===1){
         this.head=null;
-        this.tail=null;
       }
       else {
         this.head=prevNode.nextNode;
