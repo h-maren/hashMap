@@ -14,19 +14,23 @@ class HashMap {
         return hashCode;
     }
     resize () {
+        //NEED TO FIX RESIZE
         let newHashMap = new HashMap(this.size*2);
         console.log(newHashMap.size);
-        this.buckets.forEach(bucket => {
+        this.buckets.forEach((bucket) => {
             if(bucket){
                 let currentNode=bucket.head;
                 while(currentNode){
                     let hashIndex=this.hash(currentNode.key);
+                    console.log(hashIndex);
                     newHashMap[hashIndex]=currentNode.data;
                     currentNode=currentNode.nextNode;
                 }
             }
         })
-        //return newHashMap;
+        console.log(newHashMap);
+        this.buckets=newHashMap.buckets;
+        this.size=newHashMap.size;
     }
     set(key,value){
         //each bucket will be a linked list
