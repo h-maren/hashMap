@@ -1,7 +1,7 @@
 import { LinkedList } from "./linkedlist";
 
 class HashMap {
-    constructor(size=17) {
+    constructor(size=16) {
         this.buckets=[];
         this.size=size;
     }
@@ -13,9 +13,32 @@ class HashMap {
         }
         return hashCode;
     }
+    resize () {
+        let newHashMap = new HashMap(this.size*2);
+        console.log(newHashMap.size);
+        this.buckets.forEach(bucket => {
+            if(bucket){
+                let currentNode=bucket.head;
+                while(currentNode){
+                    let hashIndex=this.hash(currentNode.key);
+                    newHashMap[hashIndex]=currentNode.data;
+                    currentNode=currentNode.nextNode;
+                }
+            }
+        })
+        //return newHashMap;
+    }
     set(key,value){
         //each bucket will be a linked list
         let hashIndex = this.hash(key);
+        let loadFactor = (this.length()+1)/this.size;
+        console.log(loadFactor);
+        if(loadFactor>0.75){
+            this.resize();
+        }
+        //console.log(this.length());
+        //console.log(this.size);
+        //console.log(loadFactor);
         if (!this.buckets[hashIndex]){
             this.buckets[hashIndex] = new LinkedList();
         }
@@ -33,9 +56,9 @@ class HashMap {
     has(key){
         let hashIndex=this.hash(key);
         let storedList=this.buckets[hashIndex];
-        console.log(storedList)
+       // console.log(storedList)
         if(storedList){
-            console.log(storedList.size);
+            //console.log(storedList.size);
             return true;
         } else {
             return false;
@@ -45,8 +68,8 @@ class HashMap {
        let hashIndex=this.hash(key);
        let storedList=this.buckets[hashIndex];
        let checkList=storedList.remove(key);
-       console.log(storedList);
-       console.log(checkList);
+       //console.log(storedList);
+       //console.log(checkList);
        if(storedList.size===0){
         this.buckets[hashIndex]=null;
        }
@@ -66,7 +89,7 @@ class HashMap {
     }
     clear() {
         this.buckets.forEach((bucket) => {
-            console.log(bucket);
+            //console.log(bucket);
             let currentNode=bucket.head;
             while(currentNode){
                 currentNode.data=null;
@@ -79,6 +102,37 @@ class HashMap {
         });
     }
     keys(){
+        let keyArray=[];
+        this.buckets.forEach((bucket)=> {
+            let currentNode=bucket.head;
+            while(currentNode){
+                keyArray.push(currentNode.key);
+                currentNode=currentNode.nextNode
+            }
+        })
+        return keyArray;
+    }
+    values(){
+        let valueArray=[];
+        this.buckets.forEach((bucket)=> {
+            let currentNode=bucket.head;
+            while(currentNode){
+                valueArray.push(currentNode.data);
+                currentNode=currentNode.nextNode;
+            }
+        });
+        return valueArray;
+    }
+    entries(){
+        let entryArray=[];
+        this.buckets.forEach((bucket)=> {
+            let currentNode=bucket.head;
+            while(currentNode){
+                entryArray.push([currentNode.key,currentNode.data]);
+                currentNode=currentNode.nextNode;
+            }
+        });
+        return entryArray;
     }
 }
 

@@ -31,6 +31,7 @@ class LinkedList {
     }
     return null;
   }
+
   remove(key){
     let prevNode = this.head;
     if(key===prevNode.key){

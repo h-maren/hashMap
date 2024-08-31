@@ -2,23 +2,19 @@ import './style.css';
 import { HashMap } from './hashMap.js';
 
 const test = new HashMap() // or HashMap() if using a factory
-test.set('apple', 'red');
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+test.set('moon','silver');
+
 console.log(test);
-
-console.log(test.get('apple'))
-console.log(test.get('blueberry'));
-
-console.log(test.has('apple'));
-console.log(test.has('blueberry'))
-
-test.set('banana', 'yellow');
-console.log(test);
-console.log(test.has('apple'));
-console.log(test.has('cat'));
-
-
-
 console.log(test.length());
-//test.clear();
-console.log(test);
-//test.set('apple','red');
