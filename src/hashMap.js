@@ -3,27 +3,32 @@ import { LinkedList } from "./linkedlist";
 class HashMap {
     constructor(size=16) {
         this.buckets=[];
-        this.size=size;
+        this.size=size; 
     }
-    hash(key) {
+    hash(key,hashSize) {
         let hashCode=0;
         const primeNumber=31;
         for(let i=0; i<key.length; i++){
-            hashCode=(primeNumber*hashCode+key.charCodeAt(i)) % this.size;
+            hashCode=(primeNumber*hashCode+key.charCodeAt(i)) % hashSize;
         }
         return hashCode;
     }
     resize () {
-        //NEED TO FIX RESIZE
-        let newHashMap = new HashMap(this.size*2);
+        let newHashSize = this.size*2;
+        let newHashMap = new HashMap(newHashSize);
         console.log(newHashMap.size);
         this.buckets.forEach((bucket) => {
             if(bucket){
                 let currentNode=bucket.head;
+                console.log(currentNode);
                 while(currentNode){
-                    let hashIndex=this.hash(currentNode.key);
-                    console.log(hashIndex);
-                    newHashMap[hashIndex]=currentNode.data;
+                    let nodeValue=currentNode.data;
+                    let nodeKey=currentNode.key
+                    let hashIndex=this.hash(nodeKey,newHashSize);
+                    if (!newHashMap.buckets[hashIndex]){
+                        newHashMap.buckets[hashIndex] = new LinkedList();
+                    }
+                    newHashMap.buckets[hashIndex].append(nodeKey,nodeValue);
                     currentNode=currentNode.nextNode;
                 }
             }
@@ -34,7 +39,8 @@ class HashMap {
     }
     set(key,value){
         //each bucket will be a linked list
-        let hashIndex = this.hash(key);
+        let tableSize=this.size;
+        let hashIndex = this.hash(key,tableSize);
         let loadFactor = (this.length()+1)/this.size;
         console.log(loadFactor);
         if(loadFactor>0.75){
@@ -49,7 +55,8 @@ class HashMap {
         this.buckets[hashIndex].append(key,value);
     }
     get(key){
-        let hashIndex=this.hash(key);
+        let tableSize=this.size;
+        let hashIndex=this.hash(key,tableSize);
         let storedList=this.buckets[hashIndex];
         if(storedList===undefined){
             return null;
@@ -58,7 +65,8 @@ class HashMap {
         }
     }
     has(key){
-        let hashIndex=this.hash(key);
+        let tableSize=this.size;
+        let hashIndex=this.hash(key,tableSize);
         let storedList=this.buckets[hashIndex];
        // console.log(storedList)
         if(storedList){
@@ -69,7 +77,8 @@ class HashMap {
         }
     }
     remove(key){
-       let hashIndex=this.hash(key);
+        let tableSize=this.size;
+       let hashIndex=this.hash(key,tableSize);
        let storedList=this.buckets[hashIndex];
        let checkList=storedList.remove(key);
        //console.log(storedList);
